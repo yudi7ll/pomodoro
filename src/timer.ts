@@ -19,7 +19,7 @@ export default class Timer {
   }
 
   addTimer = () => {
-	if (this.time.sec <= 60)
+	if (this.time.sec < 59)
 	  return this.time.sec++;
 
 	this.time.sec = 0;
