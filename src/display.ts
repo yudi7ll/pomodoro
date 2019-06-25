@@ -5,6 +5,14 @@ const line = cli.Line;
 const lineBuffer = cli.LineBuffer;
 const progress = cli.Progress;
 
+const thisProgressBar = new progress(20);
+const outputBuffer = new lineBuffer({
+  x: 0,
+  y: 0,
+  width: 'console',
+  height: 'console'
+});
+
 export default (activeMode: boolean,
 				sequence: number,
 				time: {
@@ -14,18 +22,12 @@ export default (activeMode: boolean,
 				  timestamp: () => number
 				}) => {
 
-  const thisProgressBar = new progress(20);
-
-  const outputBuffer = new lineBuffer({
-	x: 0,
-	y: 0,
-	width: 'console',
-	height: 'console'
-  });
-
   // header
   new line(outputBuffer)
-	.column('Pomodoro ' + sequence, 20, [activeMode ? clc.red : clc.green])
+	.column(activeMode ?
+			'Pomodoro ' + sequence :
+			'Coffee Time ' + sequence,
+			20, [activeMode ? clc.red : clc.green])
 	.fill()
 	.store();
 
@@ -45,7 +47,8 @@ export default (activeMode: boolean,
   // timer
   new line(outputBuffer)
 	.column('Time', 10)
-	.column(time.min + '.' + time.sec, 20, [clc.bold])
+	.column(`${time.min < 10 ? '0' + time.min : time.min}` + '.' + 
+			`${time.sec < 10 ? '0' + time.sec : time.sec}`, 20, [clc.bold])
 	.fill()
 	.store();
 
