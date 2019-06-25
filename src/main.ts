@@ -64,7 +64,7 @@ export default class Main extends Timer {
 	  console.clear();
 	  Display(this.activeMode, this.sequence, this.time);
 
-	  // if time reach the limit
+	  // if the time reach the limit
 	  if (this.time.min >= this.time.limit)
 		this.toggleActiveMode();
 
