@@ -24,14 +24,13 @@ export default class Main extends Timer {
 	this.activeMode = !this.activeMode;
 	// reset time
 	this.time.sec = 0;
-	this.time.min = 0;
-	// set limit time to breakTime or activeTime
-	this.time.limit = this.time.limit === this.activeTime ?
-	  this.breakTime : this.activeTime;
+	// set min time && limit time to breakTime or activeTime
+	this.time.min = this.time.limit = this.activeMode ?
+	  this.activeTime : this.breakTime;
 	// if activeMode changed to then true sequence + 1
 	if (this.activeMode) this.sequence++;
 	// if current sequence >= 4 then triple the time limit
-	if (this.sequence >= 4) this.time.limit *= 3;
+	if (this.sequence >= 4) this.time.min *= 3;
 	// send notification
 	this.notifySend();
   }
@@ -65,11 +64,11 @@ export default class Main extends Timer {
 	  Display(this.activeMode, this.sequence, this.time);
 
 	  // if the time reach the limit
-	  if (this.time.min >= this.time.limit)
+	  if (this.time.min <= 0 && this.time.sec <= 0)
 		this.toggleActiveMode();
 
-	  // increase time
-	  this.addTimer();
+	  // decrease time
+	  this.decreaseTime();
 	}, 1000);
   }
 }

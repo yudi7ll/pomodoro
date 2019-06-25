@@ -6,12 +6,6 @@ const lineBuffer = cli.LineBuffer;
 const progress = cli.Progress;
 
 const thisProgressBar = new progress(20);
-const outputBuffer = new lineBuffer({
-  x: 0,
-  y: 0,
-  width: 'console',
-  height: 'console'
-});
 
 export default (activeMode: boolean,
 				sequence: number,
@@ -21,6 +15,13 @@ export default (activeMode: boolean,
 				  limit: number,
 				  timestamp: () => number
 				}) => {
+
+  const outputBuffer = new lineBuffer({
+	x: 0,
+	y: 0,
+	width: 'console',
+	height: 'console'
+  });
 
   // header
   new line(outputBuffer)
@@ -55,7 +56,7 @@ export default (activeMode: boolean,
   // progress bar
   new line(outputBuffer)
 	.column('Progress', 10)
-	.column(thisProgressBar.update(time.timestamp(), time.limit * 60), 100)
+	.column(thisProgressBar.update((time.limit * 60) - time.timestamp(), (time.limit * 60)), 100)
 	.fill()
 	.store();
 

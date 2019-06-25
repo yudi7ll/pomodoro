@@ -9,7 +9,7 @@ export default class Timer {
   constructor(activeTime: number)
   {
 	this.time = {
-	  min: 0,
+	  min: activeTime,
 	  sec: 0,
 	  limit: activeTime,
 	  timestamp: function(): number {
@@ -18,11 +18,11 @@ export default class Timer {
 	}
   }
 
-  addTimer = () => {
-	if (this.time.sec < 59)
-	  return this.time.sec++;
+  decreaseTime = () => {
+	if (this.time.sec > 0)
+	  return this.time.sec--;
 
-	this.time.sec = 0;
-	this.time.min++;
+	this.time.sec = 59;
+	this.time.min--;
   }
 }
