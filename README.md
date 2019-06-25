@@ -22,13 +22,6 @@ npm run build
 ```sh
 ./bin/pomodoro -h
 ```
-
-## Run tests
-
-```sh
-npm run test
-```
-
 ## Author
 
 👤 **Yudi**
