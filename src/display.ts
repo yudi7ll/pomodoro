@@ -8,12 +8,11 @@ const progress = cli.Progress;
 const thisProgressBar = new progress(20);
 
 export default (activeMode: boolean,
-				sequence: number,
+				session: number,
 				time: {
 				  min: number,
 				  sec: number,
-				  limit: number,
-				  timestamp: () => number
+				  limit: number
 				}) => {
 
   const outputBuffer = new lineBuffer({
@@ -23,11 +22,24 @@ export default (activeMode: boolean,
 	height: 'console'
   });
 
+  const limitTimestamp = time.limit * 60;
+
+  const currentTimestamp = (): number => {
+	return limitTimestamp - ((time.min * 60) + time.sec);
+  }
+
+  const displayTime = (): string => {
+	return [
+	  [time.min < 10 ? '0' + time.min : time.min],
+	  [time.sec < 10 ? '0' + time.sec : time.sec]
+	].join('.');
+  }
+
   // header
   new line(outputBuffer)
 	.column(activeMode ?
-			'Pomodoro ' + sequence :
-			'Coffee Time ' + sequence,
+			'Pomodoro ' + session :
+			'Coffee Time ' + session,
 			20, [activeMode ? clc.red : clc.green])
 	.fill()
 	.store();
@@ -48,15 +60,14 @@ export default (activeMode: boolean,
   // timer
   new line(outputBuffer)
 	.column('Time', 10)
-	.column(`${time.min < 10 ? '0' + time.min : time.min}` + '.' + 
-			`${time.sec < 10 ? '0' + time.sec : time.sec}`, 20, [clc.bold])
+	.column(displayTime(), 20, [clc.bold])
 	.fill()
 	.store();
 
   // progress bar
   new line(outputBuffer)
 	.column('Progress', 10)
-	.column(thisProgressBar.update((time.limit * 60) - time.timestamp(), (time.limit * 60)), 100)
+	.column(thisProgressBar.update(currentTimestamp(), limitTimestamp), 100)
 	.fill()
 	.store();
 

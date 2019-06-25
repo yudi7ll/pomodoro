@@ -2,8 +2,7 @@ export default class Timer {
   public time: {
 	min: number,
 	sec: number,
-	limit: number,
-	timestamp: () => number
+	limit: number
   }
 
   constructor(activeTime: number)
@@ -11,10 +10,7 @@ export default class Timer {
 	this.time = {
 	  min: activeTime,
 	  sec: 0,
-	  limit: activeTime,
-	  timestamp: function(): number {
-		return (this.min * 60) + this.sec;
-	  }
+	  limit: activeTime
 	}
   }
 

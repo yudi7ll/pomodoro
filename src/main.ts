@@ -6,7 +6,7 @@ import path from 'path';
 export default class Main extends Timer {
   private activeTime: number;
   private breakTime: number;
-  private sequence: number;
+  private session: number;
   private activeMode: boolean;
 
   constructor(activeTime: number, breakTime: number)
@@ -15,7 +15,7 @@ export default class Main extends Timer {
 
 	this.activeTime = activeTime;
 	this.breakTime = breakTime;
-	this.sequence = 1;
+	this.session = 1;
 	this.activeMode = true;
   }
 
@@ -27,10 +27,10 @@ export default class Main extends Timer {
 	// set min time && limit time to breakTime or activeTime
 	this.time.min = this.time.limit = this.activeMode ?
 	  this.activeTime : this.breakTime;
-	// if activeMode changed to then true sequence + 1
-	if (this.activeMode) this.sequence++;
-	// if current sequence >= 4 then triple the time limit
-	if (this.sequence >= 4) this.time.min *= 3;
+	// if activeMode changed to then true session + 1
+	if (this.activeMode) this.session++;
+	// if current session >= 4 then triple the time limit
+	if (this.session >= 4) this.time.min *= 3;
 	// send notification
 	this.notifySend();
   }
@@ -38,17 +38,17 @@ export default class Main extends Timer {
   notifySend()
   {
 	// notification sound
-	var soundPath: any = path.resolve(__dirname); // absolute path
-	soundPath = soundPath.split('/');
-	//remove the last path
-	soundPath = soundPath.slice(1, soundPath.length - 1); 
-	soundPath = '/' + soundPath.join('/') + '/sound/notif.ogg';
+	var soundPath: string = [
+	  '/',
+	  // remove the last path
+	  path.resolve(__dirname).split('/').slice(0, -1).join('/'),
+	  '/sound/notif.ogg'
+	].join('');
 	// soundPath == /currentDirectory/sound/notif.ogg
 	exec('paplay ' + soundPath);
 
 	// // send notification
-	exec('notify-send "Pomodoro ' +
-		 this.sequence + ', ' +
+	exec('notify-send "Pomodoro ' + this.session + ', ' +
 		 this.time.limit + ' Minutes"');
   }
 
@@ -59,9 +59,10 @@ export default class Main extends Timer {
 	this.notifySend();
 
 	setInterval(() => {
+
 	  // display time
 	  console.clear();
-	  Display(this.activeMode, this.sequence, this.time);
+	  Display(this.activeMode, this.session, this.time);
 
 	  // if the time reach the limit
 	  if (this.time.min <= 0 && this.time.sec <= 0)
