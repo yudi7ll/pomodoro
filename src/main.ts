@@ -48,8 +48,8 @@ export default class Main extends Timer {
 	exec('paplay ' + soundPath);
 
 	// // send notification
-	exec('notify-send "Pomodoro ' + this.session + ', ' +
-		 this.time.limit + ' Minutes"');
+	let status = this.activeMode ? "Pomodoro " : "Break ";
+	exec(`notify-send "${status} ${this.session}, ${this.time.limit} Minutes"`);
   }
 
 
