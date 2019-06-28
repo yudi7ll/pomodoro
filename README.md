@@ -21,7 +21,9 @@ npm run build
 > And then
 ```sh
 npm start
-// or
+```
+or
+```sh
 ./bin/pomodoro -h
 ```
 ## Author
