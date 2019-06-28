@@ -20,6 +20,8 @@ npm run build
 > chmod +x ./bin/pomodoro
 > And then
 ```sh
+npm start
+// or
 ./bin/pomodoro -h
 ```
 ## Author
