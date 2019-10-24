@@ -33,12 +33,12 @@ export default class Main extends Timer {
 	if (this.activeMode)
 	  this.session++;
 
-	// reset session
+	// reset session 5 to 1
 	if (this.session > 4 && this.activeMode)
 	  this.session = 1;
 
 	// if not activeMode && current session >= 4
-	// then triple the time min
+	// then triple the time min (breakTime)
 	if (!this.activeMode && this.session >= 4)
 	  this.time.min = this.time.limit *= 3;
 
@@ -48,7 +48,7 @@ export default class Main extends Timer {
 
   notifySend = () => {
 	// notification sound
-	let soundPath: string = [
+	const soundPath: string = [
 	  '/',
 	  path.resolve(__dirname).split('/').slice(0, -1).join('/'),
 	  '/sound/notif.ogg'
@@ -58,7 +58,7 @@ export default class Main extends Timer {
 	exec('paplay ' + soundPath);
 
 	// send notification
-	let status = this.activeMode ? "Pomodoro " : "Break ";
+	const status: string = this.activeMode ? "Pomodoro " : "Break ";
 	exec(`notify-send "${status} ${this.session}, ${this.time.limit} Minutes"`);
   }
 

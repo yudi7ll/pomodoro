@@ -1,5 +1,5 @@
 export default class Timer {
-  public time: {
+  protected time: {
 	min: number,
 	sec: number,
 	limit: number
